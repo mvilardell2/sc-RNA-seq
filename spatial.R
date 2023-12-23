@@ -46,6 +46,6 @@ p2 <- SpatialDimPlot(brain, label = TRUE, label.size = 3)
 p1 + p2
 
 
-
+# ---
 
 
