@@ -5,7 +5,7 @@
 
 #data: Peripheral Blood Mononuclear Cells (PBMC) from 10X Genomics. 
 
-setwd("C:/Users/MARINA/Documents/BIOINFORMATICS/scRNA_seq")
+setwd("~/Documents/others")
 
 # Load libraries
 library(dplyr)
@@ -13,7 +13,7 @@ library(Seurat)
 
 # ----------- Data Preparation --------------
 # Load the dataset
-pbmc.data<-Read10X(data.dir= "Datasets/filtered_gene_bc_matrices/hg19/") #Not a Seurat Object
+pbmc.data<-Read10X(data.dir= "scellRNA/pbmc3k_filtered_gene_bc_matrices/filtered_gene_bc_matrices/hg19/") #Not a Seurat Object
 str(pbmc.data)
 pbmc.data[1:10,1:10]
 
@@ -118,15 +118,31 @@ head(cluster2.markers, n = 5)
 cluster5.markers <- FindMarkers(pbmc, ident.1 = 5, ident.2 = c(0, 3))
 head(cluster5.markers, n = 5)
 
+# find markers for every cluster compared to all remaining cells, report only the positive ones
+pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE)
+top_genes<-pbmc.markers %>%
+  group_by(cluster) %>%
+  dplyr::filter(avg_log2FC > 1) %>%
+  slice_head(n = 10) 
+
+
 
 ##### VISUALIZATION
 
 VlnPlot(pbmc, features = c("MS4A1", "CD79A"))
+VlnPlot(pbmc, features = c("NKG7", "PF4"), slot = "counts", log = TRUE)
 # Shows expression of genes across clusters
 
 FeaturePlot(pbmc, features = c("MS4A1", "GNLY", "CD3E", "CD14", "FCER1A", "FCGR3A", "LYZ", "PPBP","CD79A"))
 #Visualizes feature expression
 
+
+pbmc.markers %>%
+  group_by(cluster) %>%
+  dplyr::filter(avg_log2FC > 1) %>%
+  slice_head(n = 10) %>%
+  ungroup() -> top10
+DoHeatmap(pbmc, features = top10$gene) + NoLegend()
 
 
 # ---------- Assigning cell type identity to clusters ---------
