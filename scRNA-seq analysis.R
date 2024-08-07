@@ -4,7 +4,7 @@
 # data: 20k Mixture of NSCLC DTCs from 7 donors, 3' v3.1
 # data source: https://www.10xgenomics.com/resources/datasets/10-k-human-pbm-cs-multiome-v-1-0-chromium-controller-1-standard-2-0-0         
 
-setwd("C:/Users/MARINA/Documents/BIOINFORMATICS/scRNA_seq")
+setwd("C:/Users/MARINA/Documents/BIOINFORMATICS/scellRNA_seq")
 
 # load libraries
 library(Seurat)
