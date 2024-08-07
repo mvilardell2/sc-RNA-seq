@@ -268,7 +268,7 @@ prop.table(table(Idents(pbmc)))
 table(Idents(pbmc), pbmc$replicate)
 
 
-# ---------- Selecting cells and subsetting ----------
+# ---------- Selecting cells and subsetting -----------
 
 # What are the cell names of all NK cells?
 WhichCells(pbmc, idents = "NK")
