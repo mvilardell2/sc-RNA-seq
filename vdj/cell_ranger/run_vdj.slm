@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#SBATCH --job-name=scRNAseq-pipeline
+#SBATCH --time=20:00:00
+#SBATCH --output=logs/%x.%j.out
+#SBATCH --error=logs/%x.%j.err
+#SBATCH --mem=5G  #128
+#SBATCH --cpus-per-task=8 
+
+# Record start time
+start=$(date +%s)
+
+
+#Run this pipeline from the runs/ directory
+
+
+module load cellranger/8.0.1 
+
+
+### RUN THE CELLRANGER_VDJ
+
+cellranger vdj --id=HumanB_Cell \
+    --reference=../refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0 \
+    --fastqs=../dataset-vdj-practice/sc5p_v2_hs_B_1k_multi_5gex_b_fastqs/sc5p_v2_hs_B_1k_b_fastqs \
+    --sample=sc5p_v2_hs_B_1k_b \
+    --localcores=8 \
+    --localmem=5 \
+
