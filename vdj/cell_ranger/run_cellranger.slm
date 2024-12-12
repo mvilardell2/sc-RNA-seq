@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Job description for SLURM:
+#SBATCH --job-name="CellRanger"
+#SBATCH --mem=40G         # Total memory required for each task
+#SBATCH --cpus-per-task=8   # Number of cores per task
+#SBATCH --ntasks=1          # Number of tasks (one task per array job)
+#SBATCH --time=05:00:00   # Maximum runtime 
+#SBATCH -o logs/slurm.%N.%J.%u.%a.out  # STDOUT output log
+#SBATCH -e logs/slurm.%N.%J.%u.%a.err  # STDERR error log
+
+# Load module
+module load cellranger/8.0.1
+
+# Record start time
+start=$(date +%s)
+
+# Load enviroment variables
+source samples.config
+
+# It loads:OUTPUT_DIR, MODULE, FASTQS, SAMPLE_IDS, MULTI_CONFIG_FILE
+
+
+#######################################
+####### cellranger parameters #########
+#######################################
+
+cd ${OUTPUT_DIR}
+
+SAMPLE_IDS_MODIFIED=$(echo $SAMPLE_IDS | tr ',' ' ')
+
+for SAMPLE_NAME in $SAMPLE_IDS_MODIFIED; do
+    echo "Processing sample: $SAMPLE_NAME"
+
+# CELL RANGER COUNT
+
+if [ "$MODULE" == "count" ]; then
+    echo "Running cellranger count..."
+
+    # Set the path to the reference
+    transcriptome="/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/refdata-gex-GRCh38-2020-A"
+
+    # Run cellranger
+    cellranger count --id=${SAMPLE_NAME} \
+                     --transcriptome=${transcriptome} \
+                     --create-bam=true \
+                     --fastqs=${FASTQS} \
+                     --sample=${SAMPLE_NAME} \
+                     --localcores=8 \
+                     --localmem=40
+
+# CELL RANGER VDJ
+   
+elif [ "$MODULE" == "vdj" ]; then
+    echo "Running cellranger vdj..."
+
+    # Set the path to the reference
+    transcriptome="/mnt/beegfs/mvilardell/cellranger_tutorials/vdj_tutorial/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0"
+
+
+    # Run cellranger
+    cellranger vdj --id=${SAMPLE_NAME} \
+                   --reference=${transcriptome} \
+                   --fastqs=${FASTQS} \
+                   --sample=${SAMPLE_NAME} \
+                   --localcores=8 \
+                   --localmem=5 \
+
+
+
+# CELL RANGER MULTI
+
+elif [ "$MODULE" == "multi" ]; then
+    echo "Running cellranger multi..."
+
+    # Run cellranger 
+    cellranger multi --id=${SAMPLE_NAME} --csv=${MULTI_CONFIG_FILE}
+
+
+
+else
+    echo "Invalid module name. Please enter either 'count' or 'vdj'."
+fi
+
+
+# End log
+echo "Completed sample: ${SAMPLE_NAME} at $(date)"
+
+
+done	
+
+
+# Record end time, total run time, and print it
+end=$(date +%s)
+runtime=$((end-start))
+echo $runtime
+

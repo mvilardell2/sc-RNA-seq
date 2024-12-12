@@ -5,6 +5,6 @@ create-bam,true
 [vdj]
 reference,/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0
 [libraries]
-fastq_id,fastqs,lanes,feature_types,subsample_rate
-sc5p_v2_hs_B_1k_5gex,/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/dataset-multi-practice/sc5p_v2_hs_B_1k_multi_5gex_b_fastqs/sc5p_v2_hs_B_1k_5gex_fastqs,1|2,gene expression,
-sc5p_v2_hs_B_1k_b,/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/dataset-multi-practice/sc5p_v2_hs_B_1k_multi_5gex_b_fastqs/sc5p_v2_hs_B_1k_b_fastqs,1|2,vdj,
+fastq_id,fastqs,lanes,feature_types
+sc5p_v2_hs_B_1k_5gex,/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/dataset-multi-practice/sc5p_v2_hs_B_1k_multi_5gex_b_fastqs/sc5p_v2_hs_B_1k_5gex_fastqs,1|2,gene expression
+sc5p_v2_hs_B_1k_b,/mnt/beegfs/mvilardell/cellranger_tutorials/cellrangermulti_tutorial/dataset-multi-practice/sc5p_v2_hs_B_1k_multi_5gex_b_fastqs/sc5p_v2_hs_B_1k_b_fastqs,1|2,vdj
